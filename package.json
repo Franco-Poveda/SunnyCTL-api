@@ -1,0 +1,25 @@
+{
+  "name": "rest-api",
+  "version": "0.0.1",
+  "description": "This Rest API for MY Angular2 Projects.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "rest",
+    "api"
+  ],
+  "author": "Shashank Tiwari",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "cors": "^2.8.1",
+    "express": "^4.14.0",
+    "express-rest-response": "^1.2.0",
+    "jsonwebtoken": "^8.1.0",
+    "mongodb": "^2.2.10",
+    "mongoose": "^4.13.7",
+    "mqtt": "^2.11.0"
+  }
+}
