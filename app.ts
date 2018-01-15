@@ -10,20 +10,20 @@ import * as cors from 'cors';
 import setRoutes from './routes';
 
 const app = express();
-dotenv.load({ path: '.env' });
+dotenv.load();
 app.set('port', (process.env.PORT || 3000));
 app.use(cors());
-app.use('/', express.static(path.join(__dirname, '../public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-let mongodbURI;
-if (process.env.NODE_ENV === 'test') {
-  mongodbURI = process.env.MONGODB_TEST_URI;
-} else {
-  mongodbURI = process.env.MONGODB_URI;
-  app.use(morgan('dev'));
-}
+/*let mongodbURI = 'mongodb://api01:EQqOBzTyw7lMmB6z@' +
+  'cluster0-shard-00-00-6mwft.mongodb.net:27017,' +
+  'cluster0-shard-00-01-6mwft.mongodb.net:27017,' +
+  'cluster0-shard-00-02-6mwft.mongodb.net:27017/test' +
+  '?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin'; */
+  let mongodbURI = process.env.DB_URI;
+
+app.use(morgan('dev'));
 
 mongoose.Promise = global.Promise;
 const mongodb = mongoose.connect(mongodbURI, { useMongoClient: true });
@@ -34,13 +34,9 @@ mongodb
 
     setRoutes(app);
 
-    app.get('/*', function(req, res) {
-      res.sendFile(path.join(__dirname, '../public/index.html'));
-    });
-
     if (!module.parent) {
       app.listen(app.get('port'), () => {
-        console.log('Angular Full Stack listening on port ' + app.get('port'));
+        console.log('sunnyCTL-UI service API running @ ' + app.get('port'));
       });
     }
 
