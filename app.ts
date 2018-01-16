@@ -10,7 +10,7 @@ import * as cors from 'cors';
 import setRoutes from './routes';
 
 const app = express();
-dotenv.load();
+dotenv.load({path: path.join(__dirname, "../.env")});
 app.set('port', (process.env.PORT || 3000));
 app.use(cors());
 app.use(bodyParser.json());
@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 let mongodbURI = process.env.DB_URI;
 
-app.use(morgan('dev'));
+app.use(morgan('common'));
 
 // Load Balancer health check
 app.use('/status', function (req, res, next) {
