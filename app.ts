@@ -16,14 +16,16 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-/*let mongodbURI = 'mongodb://api01:EQqOBzTyw7lMmB6z@' +
-  'cluster0-shard-00-00-6mwft.mongodb.net:27017,' +
-  'cluster0-shard-00-01-6mwft.mongodb.net:27017,' +
-  'cluster0-shard-00-02-6mwft.mongodb.net:27017/test' +
-  '?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin'; */
-  let mongodbURI = process.env.DB_URI;
+let mongodbURI = process.env.DB_URI;
 
 app.use(morgan('dev'));
+
+// Load Balancer health check
+app.use('/status', function (req, res, next) {
+  res.writeHead(200, 'OK');
+  res.end();
+  next();
+});
 
 mongoose.Promise = global.Promise;
 const mongodb = mongoose.connect(mongodbURI, { useMongoClient: true });
@@ -36,13 +38,13 @@ mongodb
 
     if (!module.parent) {
       app.listen(app.get('port'), () => {
-        console.log('sunnyCTL-UI service API running @ ' + app.get('port'));
+        console.log('sunnyCTL-UI backend @ port: ' + app.get('port'));
       });
     }
 
   })
   .catch((err) => {
     console.error(err);
-});
+  });
 
 export { app };
